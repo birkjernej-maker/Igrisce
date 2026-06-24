@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Playground Duty Schedule</title>
+  <title>Odgovorni za odklepanje in zaklepanje igrišča</title>
   <style>
     body { font-family: Arial; max-width: 600px; margin: 40px auto; }
     h1 { text-align: center; }
@@ -17,9 +17,19 @@
 <script>
 const people = ["Jernej", "Jošt", "Jan", "Dori", "Jani"];
 
-// IMPORTANT: first Friday of known assignment
+// fixed anchor (must never change)
 const startDate = new Date("2026-06-26");
 
+function getNextFriday(fromDate) {
+  let d = new Date(fromDate);
+  let day = d.getDay();
+  let diff = (5 - day);
+  if (diff < 0) diff += 7;
+
+  d.setDate(d.GetDate() + diff);
+  return d;
+}
+/*  
 function getFriday(d) {
   let date = new Date(d);
   let day = date.getDay(); // 0 Sunday ... 6 Saturday
@@ -31,7 +41,7 @@ function getFriday(d) {
 function formatDate(d) {
   return d.toISOString().split("T")[0];
 }
-
+*/
 function formatPretty(d) {
   const day = String(d.getDate()).padStart(2, '0');
   const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -41,21 +51,29 @@ function formatPretty(d) {
 
 let container = document.getElementById("schedule");
 
-let today = new Date();
-let friday = getFriday(today);
-
+let today = new Date(); 
+//let friday = getFriday(today);
+let firstWeekend = getNextFriday(today)
+  
 for (let i = 0; i < 26; i++) { // ~6 months
-  let d = new Date(friday);
-  d.setDate(d.getDate() + i * 7);
+  //let d = new Date(friday);
+  let friday = new Date(firstWeekend);
+  //d.setDate(d.getDate() + i * 7);
+  friday.setDate(firstWeekend.getDate() + i * 7);
 
-  let weeksSinceStart = Math.floor((d - startDate) / (7 * 24 * 60 * 60 * 1000));
+  let sunday  = new Date(friday);
+  sunday.setDate(friday.getDate() + 2);
+  
+  //let weeksSinceStart = Math.floor((d - startDate) / (7 * 24 * 60 * 60 * 1000));
+  let weeksSinceStart = Math.floor((friday - startDate) / (7 * 24 * 60 * 60 * 1000));
+  
   let person = people[((weeksSinceStart % people.length) + people.length) % people.length];
-  let sunday = new Date(d);
-  sunday.setDate(d.getDate() + 1);
+  //let sunday = new Date(d);
+  //sunday.setDate(d.getDate() + 2);
   
   let div = document.createElement("div");
   div.className = "row";
-  div.textContent = `${formatPretty(d)} - ${formatPretty(sunday)}— ${person}`;
+  div.textContent = `${formatPretty(friday)} - ${formatPretty(sunday)} — ${person}`;
   container.appendChild(div);
 }
 </script>
