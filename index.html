@@ -84,11 +84,17 @@ let today = new Date();
 let firstWeekend = getNextFriday(today)
   
 let weeksSinceStart =
-  Math.floor((firstWeekend - startDate) / (7 * 24 * 60 * 60 * 1000));
-
+  Math.floor((firstWeekend - startDate) / (7 * 24 * 60 * 60 * 1000));  
 let currentPerson =
   people[((weeksSinceStart % people.length) + people.length) % people.length];
 
+let currentWeekendKey = isoDate(firstweekend);
+let currentSwap = overrides[currentWeekendKey];
+
+if (currentSwap) {
+  currentPerson = curentSwap.replacement;
+}  
+  
 document.getElementById("current-duty").textContent =
   `🚪 Za ta vikend je zadolžen: ${currentPerson}`;
   
