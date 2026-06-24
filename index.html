@@ -7,11 +7,25 @@
     body { font-family: Arial; max-width: 600px; margin: 40px auto; }
     h1 { text-align: center; }
     .row { padding: 6px 0; border-bottom: 1px solid #eee; }
+    #current-duty {
+      position: sticky;
+      top: 0;
+      background: #ffecb3;
+      padding: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      border: 2px solid #fbc02d;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      z-index: 100;
+}
   </style>
 </head>
 <body>
 
 <h1>Odgovorni za odklepanje in zaklepanje igrišča</h1>
+<div id="current-duty"></div> 
 <div id="schedule"></div>
 
 <script>
@@ -49,6 +63,15 @@ let container = document.getElementById("schedule");
 
 let today = new Date(); 
 let firstWeekend = getNextFriday(today)
+  
+let weeksSinceStart =
+  Math.floor((firstWeekend - startDate) / (7 * 24 * 60 * 60 * 1000));
+
+let currentPerson =
+  people[((weeksSinceStart % people.length) + people.length) % people.length];
+
+document.getElementById("current-duty").textContent =
+  `🚪 Za ta vikend je zadolžen: ${currentPerson}`;
   
 for (let i = 0; i < 26; i++) { // ~6 months
   let friday = new Date(firstWeekend);
