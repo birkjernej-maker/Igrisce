@@ -93,6 +93,8 @@ for (let i = 0; i < 26; i++) { // ~6 months
   let weeksSinceStart = Math.floor((friday - startDate) / (7 * 24 * 60 * 60 * 1000));
   
   let person = people[((weeksSinceStart % people.length) + people.length) % people.length];
+
+  let weekendKey = isoDate(friday);
   let swapInfo = overrides[weekendKey];
   if (swapInfo) {
     person = swapInfo.replacement;
@@ -106,7 +108,7 @@ for (let i = 0; i < 26; i++) { // ~6 months
   div.style.margin = "4px 0";
   div.textContent = `${formatPretty(friday)} - ${formatPretty(sunday)} — ${person}`;
   if (swapInfo) {
-    div.textContent += ' (${swapInfo.note})';  
+    div.textContent += ` (${swapInfo.note})`;  
   }
   container.appendChild(div);
 }
