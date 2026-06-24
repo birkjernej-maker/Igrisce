@@ -17,13 +17,13 @@
 <script>
 const people = ["Jernej", "Jošt", "Jan", "Dori", "Jani"];
 
-// IMPORTANT: first Saturday of known assignment
-const startDate = new Date("2026-06-27");
+// IMPORTANT: first Friday of known assignment
+const startDate = new Date("2026-06-26");
 
-function getSaturday(d) {
+function getFriday(d) {
   let date = new Date(d);
   let day = date.getDay(); // 0 Sunday ... 6 Saturday
-  let diff = (6 - day);
+  let diff = (5 - day);
   date.setDate(date.getDate() + diff);
   return date;
 }
@@ -32,21 +32,30 @@ function formatDate(d) {
   return d.toISOString().split("T")[0];
 }
 
+function formatPretty(d) {
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
 let container = document.getElementById("schedule");
 
 let today = new Date();
-let saturday = getSaturday(today);
+let friday = getFriday(today);
 
 for (let i = 0; i < 26; i++) { // ~6 months
-  let d = new Date(saturday);
+  let d = new Date(friday);
   d.setDate(d.getDate() + i * 7);
 
   let weeksSinceStart = Math.floor((d - startDate) / (7 * 24 * 60 * 60 * 1000));
   let person = people[((weeksSinceStart % people.length) + people.length) % people.length];
-
+  let sunday = new Date(d);
+  sunday.setDate(d.getDate() + 1);
+  
   let div = document.createElement("div");
   div.className = "row";
-  div.textContent = `${formatDate(d)} — ${person}`;
+  div.textContent = `${formatPretty(d)} - ${formatPretty(sunday)}— ${person}`;
   container.appendChild(div);
 }
 </script>
