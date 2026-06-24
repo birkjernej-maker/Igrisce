@@ -88,7 +88,7 @@ let weeksSinceStart =
 let currentPerson =
   people[((weeksSinceStart % people.length) + people.length) % people.length];
 
-let currentWeekendKey = isoDate(firstweekend);
+let currentWeekendKey = isoDate(firstWeekend);
 let currentSwap = overrides[currentWeekendKey];
 
 if (currentSwap) {
