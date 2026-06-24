@@ -38,6 +38,13 @@ const colors = {
   "Dori":   "#f3e5f5",
   "Jani":   "#fce4ec"
 }
+
+const overrides = {
+  "2026-07-05": {
+    replacement: "",
+    note: "oratorij"
+  }
+};
   
 // fixed anchor (must never change)
 const startDate = new Date(2026, 5, 26);
@@ -59,6 +66,10 @@ function formatPretty(d) {
   return `${day}.${month}.${year}`;
 }
 
+function isoDate(d) {
+  return d.toISOString().split("T")[0];  
+}
+  
 let container = document.getElementById("schedule");
 
 let today = new Date(); 
@@ -76,13 +87,16 @@ document.getElementById("current-duty").textContent =
 for (let i = 0; i < 26; i++) { // ~6 months
   let friday = new Date(firstWeekend);
   friday.setDate(firstWeekend.getDate() + i * 7);
-
   let sunday  = new Date(friday);
   sunday.setDate(friday.getDate() + 2);
   
   let weeksSinceStart = Math.floor((friday - startDate) / (7 * 24 * 60 * 60 * 1000));
   
   let person = people[((weeksSinceStart % people.length) + people.length) % people.length];
+  let swapInfo = overrides[weekendKey];
+  if (swapInfo) {
+    person = swapInfo.replacement;
+  }
   
   let div = document.createElement("div");
   div.className = "row";
@@ -91,6 +105,9 @@ for (let i = 0; i < 26; i++) { // ~6 months
   div.style.padding = "8px";
   div.style.margin = "4px 0";
   div.textContent = `${formatPretty(friday)} - ${formatPretty(sunday)} — ${person}`;
+  if (swapInfo) {
+    div.textContent += ' (${swapInfo.note})';  
+  }
   container.appendChild(div);
 }
 </script>
