@@ -18,7 +18,7 @@
 const people = ["Jernej", "Jošt", "Jan", "Dori", "Jani"];
 
 // fixed anchor (must never change)
-const startDate = new Date("2026-06-26");
+const startDate = new Date(2026, 5, 26);
 
 function getNextFriday(fromDate) {
   let d = new Date(fromDate);
@@ -26,7 +26,7 @@ function getNextFriday(fromDate) {
   let diff = (5 - day);
   if (diff < 0) diff += 7;
 
-  d.setDate(d.GetDate() + diff);
+  d.setDate(d.getDate() + diff);
   return d;
 }
 
@@ -40,7 +40,6 @@ function formatPretty(d) {
 let container = document.getElementById("schedule");
 
 let today = new Date(); 
-//let friday = getFriday(today);
 let firstWeekend = getNextFriday(today)
   
 for (let i = 0; i < 26; i++) { // ~6 months
