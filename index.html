@@ -61,8 +61,8 @@ function getNextFriday(fromDate) {
   let d = new Date(fromDate);
   let day = d.getDay();
   let diff = (5 - day);
-  if (diff < 0) diff += 7;
-
+  //if (diff < 0) diff += 7;
+  if (day === 0) diff = -2;
   d.setDate(d.getDate() + diff);
   return d;
 }
